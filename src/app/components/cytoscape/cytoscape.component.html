@@ -1,0 +1,9 @@
+<button (click)="removeNodes()">Remove Nodes</button>
+<button (click)="addNodes()">Add Nodes</button>
+<input #removeType (keyup)="removeNodesWithType(removeType.value)">
+
+<div id="cy-cont">
+  <div id="cy"></div>
+</div>
+
+
