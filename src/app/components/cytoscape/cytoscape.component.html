@@ -1,9 +1,13 @@
 <button (click)="removeNodes()">Remove Nodes</button>
 <button (click)="addNodes()">Add Nodes</button>
+<button (click)="mountMapToOtherElement()">Mount Map in New Container</button>
+<button (click)="getMapData()">Get Map Data</button>
+
 <input #removeType (keyup)="removeNodesWithType(removeType.value)">
 
 <div id="cy-cont">
   <div id="cy"></div>
+  <div id="other-cy"></div>
 </div>
 
 

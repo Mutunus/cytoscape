@@ -15,9 +15,6 @@ export class CytoscapeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
-    console.log(cytoscape)
-
     this.cy = cytoscape({
       container: document.getElementById('cy'),
 
@@ -97,6 +94,28 @@ export class CytoscapeComponent implements OnInit {
   getElementById() {
     // get a node that has a specified id
     const node = this.cy.getElementById('12345234234234');
+  }
+
+  changeNodeStyle() {
+    // batch means that the node will only be redrawn once
+    this.cy.batch(function(){
+      this.cy.$('#j')
+        .data('weight', '70')
+        .addClass('funny')
+        .removeClass('serious')
+      ;
+    });
+  }
+
+  mountMapToOtherElement() {
+    const el = document.getElementById('other-cy');
+    this.cy.mount(el);
+  }
+
+  getMapData() {
+    this.cy.data({bro: 1, mumpo: 'ohmy'})
+    this.cy.data('yep', false)
+    console.log(this.cy.data());
   }
 
 }
