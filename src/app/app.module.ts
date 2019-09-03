@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { CytoscapeComponent } from './components/cytoscape/cytoscape.component';
 import {RouterModule, Routes} from '@angular/router';
 import {TestComponent} from './components/test/map.component';
+import {LayoutComponent} from './components/layout/layout.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: TestComponent },
   { path: 'cyto',      component: CytoscapeComponent },
+  { path: 'layout',      component: LayoutComponent },
   { path: '**', component: TestComponent }
 ];
 
@@ -17,7 +19,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     CytoscapeComponent,
-    TestComponent
+    TestComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,

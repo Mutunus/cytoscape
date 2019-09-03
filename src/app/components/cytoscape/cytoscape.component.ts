@@ -17,7 +17,6 @@ export class CytoscapeComponent implements OnInit {
   ngOnInit() {
     this.cy = cytoscape({
       container: document.getElementById('cy'),
-
       elements: {
         nodes: [
           {
@@ -53,6 +52,12 @@ export class CytoscapeComponent implements OnInit {
           style: {
             'label': 'data(id)'
           }
+        },
+        {
+          selector: '.yep',
+          style: {
+            'line-color': 'red'
+          }
         }
       ]
     });
@@ -64,6 +69,17 @@ export class CytoscapeComponent implements OnInit {
       position: { x: 400, y: 400 }
     });
 
+    const array = [30,50,50,20]
+    array.forEach((x, i) => {
+      this.cy.add({
+        group: 'nodes',
+        data: { id: x, weight: 10 },
+        position: { x: 50 + x * i, y: 100 + x * i }
+      });
+    })
+
+    this.addEventListeners()
+
   }
 
   addNodes() {
@@ -72,6 +88,13 @@ export class CytoscapeComponent implements OnInit {
       { group: 'nodes', data: { id: 'n1' }, position: { x: 600, y: 200 } },
       { group: 'edges', data: { id: 'e0', source: 'n0', target: 'n1' } }
     ]);
+  }
+
+  addNode(id) {
+    return this.cy.add({
+      group: 'nodes', data: { id, boolean: true },
+      position: { x: 550, y: 250 }
+    })
   }
 
   removeNodes() {
@@ -91,9 +114,26 @@ export class CytoscapeComponent implements OnInit {
     })
   }
 
-  getElementById() {
+  addEventListeners() {
+    const nodeId = '12345'
+    this.addNode(nodeId);
+
+    this.cy.on('tap', `node[id = ${nodeId}]`, (e) => {
+      console.log('node tap', e.target.data());
+    })
+
+    // hold shift to draw box
+    this.cy.on('boxstart', e => console.log('box start', e));
+    this.cy.on('boxend', e => console.log('box end', e))
+    this.cy.on('boxselect', e => console.log('box boxselect', e.target.data()))
+    this.cy.on('box', e => console.log('box', e.target.data()))
+
+  }
+
+
+  getElementById(id) {
     // get a node that has a specified id
-    const node = this.cy.getElementById('12345234234234');
+    return this.cy.getElementById('12345234234234');
   }
 
   changeNodeStyle() {
@@ -107,6 +147,37 @@ export class CytoscapeComponent implements OnInit {
     });
   }
 
+  centre() {
+    this.cy.centre()
+  }
+
+  animateLink() {
+
+    const link = this.cy.getElementById('ab');
+
+    setInterval(() => {
+      link.toggleClass('yep')
+    },500)
+
+
+  }
+
+  animate() {
+
+    const nodes = this.cy.collection('node[weight = 10]')
+
+    this.cy.animate({
+      center: { eles: nodes },
+      zoom: 2
+    }, {
+      duration: 1000
+    });
+  }
+
+  toPng() {
+    this.cy.png()
+  }
+
   mountMapToOtherElement() {
     const el = document.getElementById('other-cy');
     this.cy.mount(el);
@@ -116,6 +187,12 @@ export class CytoscapeComponent implements OnInit {
     this.cy.data({bro: 1, mumpo: 'ohmy'})
     this.cy.data('yep', false)
     console.log(this.cy.data());
+  }
+
+  toggleSelectionType() {
+    const currentType = this.cy.selectionType()
+    this.cy.selectionType(currentType === 'single' ? 'additive' : 'single')
+
   }
 
 }
